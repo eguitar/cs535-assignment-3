@@ -70,9 +70,6 @@ int main(int argc, char **argv) {
     // A_full and B_full kept alive at rank 0 for correctness check after gather
     double *A_full = NULL, *B_full = NULL;
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double start = MPI_Wtime();
-
     // ---- Distribute data from rank 0 ----
     if (rank == 0) {
         srand((unsigned)time(NULL));
@@ -111,6 +108,8 @@ int main(int argc, char **argv) {
 
     int cur_owner = rank;
 
+    double start = MPI_Wtime();
+
     for (int step = 0; step < P; step++) {
         int col_off = cur_owner * cpp;
         for (int i = 0; i < rpp; i++)
@@ -135,23 +134,16 @@ int main(int argc, char **argv) {
         }
     }
 
-    // ---- Gather C at rank 0 ----
-    double *full_C = NULL;
+    double end = MPI_Wtime();
+
+    // ---- Gather C at rank 0, verify, and report ----
     if (rank == 0) {
-        full_C = allocate_matrix(m, q);
+        double *full_C = allocate_matrix(m, q);
         for (int i = 0; i < rpp * q; i++)
             full_C[i] = local_C[i];
         for (int r = 1; r < P; r++)
             MPI_Recv(&full_C[r * rpp * q], rpp * q, MPI_DOUBLE, r, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    } else {
-        MPI_Send(local_C, rpp * q, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD);
-    }
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double end = MPI_Wtime();
-
-    // ---- Verify and report ----
-    if (rank == 0) {
         // Serial correctness check using the same A_full and B_full
         double *C_serial = allocate_matrix(m, q);
         matrix_multiply_serial(A_full, B_full, C_serial, m, n, q);
@@ -168,6 +160,8 @@ int main(int argc, char **argv) {
         free(C_serial);
         free(A_full);
         free(B_full);
+    } else {
+        MPI_Send(local_C, rpp * q, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD);
     }
 
     free(local_A); free(local_B); free(local_C); free(cur_B); free(recv_B);

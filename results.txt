@@ -1,0 +1,221 @@
+==============================
+=== SERIAL BASELINE (P=1) ===
+==============================
+Serial MM (MPI):
+	m = 512
+	n = 512
+	q = 512
+	runtime = 0.587314751s
+Serial MM (MPI):
+	m = 1024
+	n = 1024
+	q = 1024
+	runtime = 4.613990349s
+Serial MM (MPI):
+	m = 2048
+	n = 2048
+	q = 2048
+	runtime = 37.166803206s
+
+=== MM-1D: Vary P, square ===
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 1
+	runtime = 8.913910071s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 2
+	runtime = 4.416326849s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 4
+	runtime = 2.467998506s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 8
+	runtime = 1.283795123s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	runtime = 0.644016603s
+	correctness = PASSED
+
+=== MM-1D: Vary m (P=16) ===
+MM-1D MPI:
+	m = 512
+	n = 1024
+	q = 1024
+	P = 16
+	runtime = 0.325355232s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	runtime = 0.644745499s
+	correctness = PASSED
+MM-1D MPI:
+	m = 2048
+	n = 1024
+	q = 1024
+	P = 16
+	runtime = 1.280314986s
+	correctness = PASSED
+
+=== MM-1D: Vary q (P=16) ===
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 512
+	P = 16
+	runtime = 0.271217739s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	runtime = 0.650477936s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 2048
+	P = 16
+	runtime = 1.416536537s
+	correctness = PASSED
+
+=== MM-1D: Vary n (P=16) ===
+MM-1D MPI:
+	m = 1024
+	n = 512
+	q = 1024
+	P = 16
+	runtime = 0.316594420s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	runtime = 0.643816661s
+	correctness = PASSED
+MM-1D MPI:
+	m = 1024
+	n = 2048
+	q = 1024
+	P = 16
+	runtime = 1.306989077s
+	correctness = PASSED
+
+=== MM-2D: Vary P, square ===
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 4
+	grid = 2x2
+	runtime = 1.215250182s
+	correctness = PASSED
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.387114487s
+	correctness = PASSED
+
+=== MM-2D: Vary m (P=16) ===
+MM-2D MPI:
+	m = 512
+	n = 1024
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.196976802s
+	correctness = PASSED
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.387451758s
+	correctness = PASSED
+MM-2D MPI:
+	m = 2048
+	n = 1024
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.769173343s
+	correctness = PASSED
+
+=== MM-2D: Vary q (P=16) ===
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 512
+	P = 16
+	grid = 4x4
+	runtime = 0.198013857s
+	correctness = PASSED
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.387180178s
+	correctness = PASSED
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 2048
+	P = 16
+	grid = 4x4
+	runtime = 0.767900354s
+	correctness = PASSED
+
+=== MM-2D: Vary n (P=16) ===
+MM-2D MPI:
+	m = 1024
+	n = 512
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.198068530s
+	correctness = PASSED
+MM-2D MPI:
+	m = 1024
+	n = 1024
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.389333583s
+	correctness = PASSED
+MM-2D MPI:
+	m = 1024
+	n = 2048
+	q = 1024
+	P = 16
+	grid = 4x4
+	runtime = 0.773025823s
+	correctness = PASSED
+=== ALL DONE ===

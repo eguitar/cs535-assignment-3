@@ -92,9 +92,6 @@ int main(int argc, char **argv) {
     // A_full and B_full kept alive at rank 0 for correctness check
     double *A_full = NULL, *B_full = NULL;
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double start = MPI_Wtime();
-
     // ---- Rank 0 generates and distributes data ----
     if (rank == 0) {
         srand((unsigned)time(NULL));
@@ -136,6 +133,8 @@ int main(int argc, char **argv) {
     }
 
     // ---- 2D broadcast MM (s steps) ----
+    double start = MPI_Wtime();
+
     for (int k = 0; k < s; k++) {
         // Phase 1: Row broadcast of A_{gr,k} from P_{gr,k} to all P_{gr,j}
         if (gc == k) {
@@ -163,10 +162,11 @@ int main(int argc, char **argv) {
         block_mul(A_cur, B_cur, C_block, bm, bn, bq);
     }
 
-    // ---- Gather C at rank 0 ----
-    double *full_C = NULL;
+    double end = MPI_Wtime();
+
+    // ---- Gather C at rank 0, verify, and report ----
     if (rank == 0) {
-        full_C = alloc_mat(m, q);
+        double *full_C = alloc_mat(m, q);
 
         for (int i = 0; i < bm; i++)
             for (int j = 0; j < bq; j++)
@@ -182,15 +182,7 @@ int main(int argc, char **argv) {
                     full_C[(rr*bm + i)*q + (rc*bq + j)] = C_buf[i*bq + j];
         }
         free(C_buf);
-    } else {
-        MPI_Send(C_block, bm * bq, MPI_DOUBLE, 0, 2*s, MPI_COMM_WORLD);
-    }
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double end = MPI_Wtime();
-
-    // ---- Verify and report ----
-    if (rank == 0) {
         // Serial correctness check using the same A_full and B_full
         double *C_serial = alloc_mat(m, q);
         serial_multiply(A_full, B_full, C_serial, m, n, q);
@@ -207,6 +199,8 @@ int main(int argc, char **argv) {
         free(C_serial);
         free(A_full);
         free(B_full);
+    } else {
+        MPI_Send(C_block, bm * bq, MPI_DOUBLE, 0, 2*s, MPI_COMM_WORLD);
     }
 
     free(A_block); free(B_block); free(C_block); free(A_cur); free(B_cur);
